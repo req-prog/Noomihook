@@ -159,7 +159,7 @@ body.sh #shx,body.sh #sun{display:block}body.sh #c,body.sh #g3,body.sh #pv{filte
 
 <div id="top"><div id="cnt"></div><div id="mnm"></div><button id="fin">■ Завершить тест</button><div id="gl"></div></div>
 <div id="toast"></div><button id="fs" class="b">⛶</button>
-<div id="mpd" style="display:none;position:fixed;inset:0;z-index:80;background:rgba(0,0,0,.6);align-items:center;justify-content:center"><div class="cd" style="position:relative;top:auto;left:auto;transform:none;width:52%"><h2>Включить мультиплеер?</h2><div class="tr">Если включить, на карте ты увидишь других игроков, которые сейчас на этой же карте.</div><div class="tr">Ник: <input id="mnk" maxlength="14" placeholder="Игрок" style="background:var(--nv);border:.3vh solid var(--r1);border-radius:10px;color:#fff;font:800 3.2vh Rubik,sans-serif;padding:.8vh 1vw;width:55%;outline:0;user-select:text;-webkit-user-select:text;touch-action:manipulation"></div><div class="tr" id="mmt" style="cursor:pointer;touch-action:manipulation"></div><div class="tr" id="mgt" style="cursor:pointer;touch-action:manipulation"></div><div class="tr" id="mps"></div><div style="display:flex;gap:2%"><button class="b r" id="mpy" style="position:relative;flex:1;height:10vh"></button><button class="b" id="mpn" style="position:relative;flex:1;height:10vh;background:var(--nv2)">Закрыть</button></div></div></div>
+<div id="mpd" style="display:none;position:fixed;inset:0;z-index:80;background:rgba(0,0,0,.6);align-items:center;justify-content:center"><div class="cd" style="position:relative;top:auto;left:auto;transform:none;width:52%"><h2>Включить мультиплеер?</h2><div class="tr">Если включить, на карте ты увидишь других игроков, которые сейчас на этой же карте.</div><div class="tr">Ник: <input id="mnk" maxlength="14" placeholder="Игрок" style="background:var(--nv);border:.3vh solid var(--r1);border-radius:10px;color:#fff;font:800 3.2vh Rubik,sans-serif;padding:.8vh 1vw;width:55%;outline:0;user-select:text;-webkit-user-select:text;touch-action:manipulation"></div><div class="tr" id="mmt" style="cursor:pointer;touch-action:manipulation"></div><div class="tr" id="met" style="cursor:pointer;touch-action:manipulation"></div><div class="tr" id="mst" style="cursor:pointer;touch-action:manipulation"></div><div class="tr" id="mgt" style="cursor:pointer;touch-action:manipulation"></div><div class="tr" id="mps"></div><div style="display:flex;gap:2%"><button class="b r" id="mpy" style="position:relative;flex:1;height:10vh"></button><button class="b" id="mpn" style="position:relative;flex:1;height:10vh;background:var(--nv2)">Закрыть</button></div></div></div>
 
 
 <script>
@@ -982,12 +982,12 @@ function mpSync(){
   if(!window.supabase)throw 0;
   sb=sb||supabase.createClient(SBU,SBK);chk=want;
   ch=sb.channel(want,{config:{broadcast:{self:false}}});
-  ch.on('broadcast',{event:'p'},({payload:q})=>{if(q&&q.i!=MID&&Array.isArray(q.p)&&q.p.length==5){const nw=!RM[q.i],r=RM[q.i]||(RM[q.i]={z:((parseInt(q.i,36)%5)-2)*.1});r.p=q.p;r.n=String(q.n||'Игрок').slice(0,14);if(nw&&mode=='ed')toast(r.n+' тестирует карту');r.k=q.k|0;r.lb=q.l?{a:[q.l&1,q.l>>1&1],l:[q.l>>2&1,q.l>>3&1]}:0;if(q.r)RLRt=performance.now();if(q.cs){const js=JSON.stringify(q.cs);if(js!==r.skj){const k=skCheck({format:'noomihook-skin',c:q.cs.c,p:q.cs.p});if(k){r.skj=js;r.sk=k;r.skv=(r.skv|0)+1}}}r.ta=+q.a||0;r.tg=+q.g||0;r.tw=+q.w||0;r.fd=q.f<0?-1:1;r.td=+q.d||0;r.ts=+q.s||0;r.te=Array.isArray(q.e)&&q.e.length==2?q.e:null;r.t=performance.now()}}).on('broadcast',{event:'m'},({payload:q})=>mpMouse(q)).on('broadcast',{event:'g'},({payload:q})=>mpGrab(q)).subscribe(st=>{if(st=='SUBSCRIBED'&&mode=='play')toast('Мультиплеер: ты на карте онлайн')})
+  ch.on('broadcast',{event:'p'},({payload:q})=>{if(q&&q.i!=MID&&Array.isArray(q.p)&&q.p.length==5){const nw=!RM[q.i],r=RM[q.i]||(RM[q.i]={z:((parseInt(q.i,36)%5)-2)*.1});r.p=q.p;r.n=String(q.n||'Игрок').slice(0,14);if(nw&&mode=='ed')toast(r.n+' тестирует карту');r.k=q.k|0;r.lb=q.l?{a:[q.l&1,q.l>>1&1],l:[q.l>>2&1,q.l>>3&1]}:0;if(q.r){if(!RL()&&mode=='play')toast('На этой карте включён реалистичный режим');RLRt=performance.now()}r.bn=q.u?1:0;if(q.cs){const js=JSON.stringify(q.cs);if(js!==r.skj){const k=skCheck({format:'noomihook-skin',c:q.cs.c,p:q.cs.p});if(k){r.skj=js;r.sk=k;r.skv=(r.skv|0)+1}}}r.ta=+q.a||0;r.tg=+q.g||0;r.tw=+q.w||0;r.fd=q.f<0?-1:1;r.td=+q.d||0;r.ts=+q.s||0;r.te=Array.isArray(q.e)&&q.e.length==2?q.e:null;r.t=performance.now()}}).on('broadcast',{event:'m'},({payload:q})=>mpMouse(q)).on('broadcast',{event:'g'},({payload:q})=>mpGrab(q)).on('broadcast',{event:'x'},({payload:q})=>mpGore(q)).subscribe(st=>{if(st=='SUBSCRIBED'&&mode=='play')toast('Мультиплеер: ты на карте онлайн')})
  }catch(e){mpE=performance.now();chk='';ch=null;toast('Мультиплеер: нет связи')}
 }
 function mpTick(t){
  if(t-mpT>500){mpT=t;mpSync();lobSync()}coTick(t);
- if(ch&&ch.state=='joined'&&mode=='play'&&t-mpS>90){mpS=t;ch.send({type:'broadcast',event:'p',payload:{i:MID,n:S.nick||'Игрок',k:S.skin,l:LB.a[0]|LB.a[1]<<1|LB.l[0]<<2|LB.l[1]<<3,r:RLB?1:0,...csPay(),p:P.map(q=>[+q.x.toFixed(2),+q.y.toFixed(2)]),a:+(tw+wf).toFixed(2),g:+(W.on?Mh.min(1,Mh.abs(W.vx)):0).toFixed(2),w:+W.ph.toFixed(2),f:W.fd,d:+DA.w.toFixed(2),s:+SWM.toFixed(2),e:[armEnd(1),armEnd(-1)].map(z=>z.map(v=>+v.toFixed(2)))}})}
+ if(ch&&ch.state=='joined'&&mode=='play'&&t-mpS>90){mpS=t;ch.send({type:'broadcast',event:'p',payload:{i:MID,n:S.nick||'Игрок',k:S.skin,l:LB.a[0]|LB.a[1]<<1|LB.l[0]<<2|LB.l[1]<<3,r:rlOwn()?1:0,u:burn>0?1:0,...csPay(),p:P.map(q=>[+q.x.toFixed(2),+q.y.toFixed(2)]),a:+(tw+wf).toFixed(2),g:+(W.on?Mh.min(1,Mh.abs(W.vx)):0).toFixed(2),w:+W.ph.toFixed(2),f:W.fd,d:+DA.w.toFixed(2),s:+SWM.toFixed(2),e:[armEnd(1),armEnd(-1)].map(z=>z.map(v=>+v.toFixed(2)))}})}
 }
 function mpMk(r){
  const g=new THREE.Group(),rg=mkRig(g);r.g=g;r.rg=rg.pp;r.mt=rg.mt;r.lk=-1;
@@ -1080,8 +1080,8 @@ function coSend(){if(!co.c||co.ap)return;clearTimeout(co.tm);co.tm=setTimeout(()
 function coTest(){if(co.c&&co.c.state=='joined')co.c.send({type:'broadcast',event:'test',payload:{i:S.uid,n:S.nick||'Игрок'}})}
 function coRun(){if(co.pend){coApply(co.pend);co.pend=null}commit();const m=S.cust[ei];M=m;bld=null;sp=m.st||0;fromEd=1;show('hud');spawn()}
 function coTick(t){if(co.pend&&mode=='ed'){const q=co.pend;co.pend=null;coApply(q)}else if(co.pend&&co.c&&mode=='play'&&M===S.cust[ei]){const q=co.pend;co.pend=null;coLive(q)}
- if(co.c&&co.c.state=='joined'&&mode=='ed'&&t-coC>100){coC=t;co.c.send({type:'broadcast',event:'c',payload:{i:S.uid,n:S.nick||'Игрок',x:+(mcur.s?mcur.x:EX).toFixed(2),y:+(mcur.s?mcur.y:EY).toFixed(2)}})}}
-function coDraw(cx,pr){const now=performance.now(),k=(cv.width/innerWidth)*1.25;
+ if(co.c&&co.c.state=='joined'&&mode=='ed'&&S.me!==0&&t-coC>100){coC=t;co.c.send({type:'broadcast',event:'c',payload:{i:S.uid,n:S.nick||'Игрок',x:+(mcur.s?mcur.x:EX).toFixed(2),y:+(mcur.s?mcur.y:EY).toFixed(2)}})}}
+function coDraw(cx,pr){if(S.sm===0)return;const now=performance.now(),k=(cv.width/innerWidth)*1.25;
  for(const id in RC){const r=RC[id];if(now-r.t>3000){delete RC[id];continue}
   r.dx=r.dx==null?r.x:r.dx+(r.x-r.dx)*.35;r.dy=r.dy==null?r.y:r.dy+(r.y-r.dy)*.35;
   const[x,y]=pr(r.dx,r.dy),col='hsl('+([...id].reduce((h,c)=>(h*31+c.charCodeAt(0))>>>0,7)%360)+',80%,55%)';
@@ -1094,7 +1094,8 @@ function coLive(q){const og=gb,ol=lastBar;coApply(q);const f=b=>b&&M.bars.find(n
 const oc=document.createElement('canvas'),ox=oc.getContext('2d');oc.style.cssText='position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:2;display:none';document.body.appendChild(oc);
 function mp2(g,pr,sc){const now=performance.now();g.lineCap=g.lineJoin='round';
  for(const id in RM){const r=RM[id];if(!r.p||now-r.t>4000)continue;const q=r.p.map(a=>pr(a[0],a[1])),s=q[1],h=q[2],l=Mh.hypot(s[0]-h[0],s[1]-h[1])||1,hx=s[0]+(s[0]-h[0])/l*.25*sc,hy=s[1]+(s[1]-h[1])/l*.25*sc,K=r.k==6?(r.sk?[r.sk.c[1],r.sk.c[0],r.sk.c[2],r.sk.c[4],r.sk.c[6]||'#7a0d0d']:SK[0]):(SK[r.k]||SK[0]);
-  g.strokeStyle=K[1];g.lineWidth=.17*sc;g.beginPath();q.forEach((a,i)=>i?g.lineTo(a[0],a[1]):g.moveTo(a[0],a[1]));g.stroke();
+  g.strokeStyle=K[1];g.lineWidth=.17*sc;g.beginPath();{const lb=r.lb,sk=[lb&&lb.a[0]&&lb.a[1],0,lb&&lb.l[0]&&lb.l[1],lb&&lb.l[0]&&lb.l[1]];for(let i=0;i<4;i++){if(sk[i])continue;g.moveTo(q[i][0],q[i][1]);g.lineTo(q[i+1][0],q[i+1][1])}}g.stroke();
+   if(r.lb){g.fillStyle='#b00e0e';if(r.lb.a[0]||r.lb.a[1]){g.beginPath();g.arc(s[0],s[1],.07*sc,0,7);g.fill()}if(r.lb.l[0]||r.lb.l[1]){g.beginPath();g.arc(h[0],h[1],.07*sc,0,7);g.fill()}}
   g.fillStyle=K[3];g.beginPath();g.arc(hx,hy,.13*sc,0,7);g.fill();
   g.font='800 '+(.3*sc|0)+'px Rubik,sans-serif';g.textAlign='center';g.fillStyle='#fff';g.strokeStyle='rgba(0,0,0,.6)';g.lineWidth=3;g.strokeText(r.n,hx,hy-.35*sc);g.fillText(r.n,hx,hy-.35*sc);g.textAlign='start'}}
 function coPlay(){const on=co.c&&mode=='play'&&Object.keys(RC).length,hm=mode=='play'&&(Object.keys(RMC).length||GRB.id||goreOn()),pr=(x,y)=>[cv.width/2+(x-C.x)*C.sc,cv.height/2-(y-C.y)*C.sc];
@@ -1189,13 +1190,15 @@ $('#hud').insertAdjacentHTML('beforeend',`<button class="hb" id="bGr" style="dis
 document.body.insertAdjacentHTML('beforeend',`<div id="gm" style="display:none;position:fixed;z-index:70;background:rgba(15,26,48,.96);border-radius:14px;padding:1vh 1vw;gap:1vw;align-items:center;box-shadow:0 .5vh 2vh rgba(0,0,0,.5)"><span id="gmn" style="font-size:3vh;max-width:18vw;overflow:hidden;white-space:nowrap"></span><button id="gmy" class="b r" style="position:relative;padding:1.2vh 1.6vw;font-size:3.2vh">✋ Схватить</button><button id="gmx" class="b" style="position:relative;padding:1.2vh 1.2vw;font-size:3.2vh;background:var(--nv2)">✕</button></div>`);
 let gT=null,gmId=null,mpM=0;
 const gmHide=()=>{$('#gm').style.display='none';gmId=null};
-function grabAt(x,y){let best=null,bd=.75;for(const id in RM){const r=RM[id];if(!r.p||performance.now()-r.t>4000)continue;const q=r.q||r.p;for(let i=0;i<4;i++){const A=q[i],B=q[i+1],dx=B[0]-A[0],dy=B[1]-A[1],l2=dx*dx+dy*dy||1e-6,t=Mh.max(0,Mh.min(1,((x-A[0])*dx+(y-A[1])*dy)/l2)),d=Mh.hypot(x-A[0]-dx*t,y-A[1]-dy*t);if(d<bd){bd=d;best=id}}}return best}
-addEventListener('pointerdown',e=>{if(mode!='play'||paused)return;if(!e.target.closest('#gm'))gmHide();
- if(!(e.target.id=='hud'||e.target==g3||e.target.id=='c'))return;
+function w2s(x,y){if(R3&&cam3){cam3.updateMatrixWorld();const v=v3(x,y,0).project(cam3);return[(v.x+1)/2*innerWidth,(1-v.y)/2*innerHeight]}return[((x-C.x)*C.sc+cv.width/2)/dpr,(cv.height/2-(y-C.y)*C.sc)/dpr]}
+function grabAt(cx,cy){let best=null,bd=48;for(const id in RM){const r=RM[id];if(!r.p||performance.now()-r.t>4000)continue;const q=(r.q||r.p).map(a=>w2s(a[0],a[1]));for(let i=0;i<4;i++){const A=q[i],B=q[i+1],dx=B[0]-A[0],dy=B[1]-A[1],l2=dx*dx+dy*dy||1e-6,t=Mh.max(0,Mh.min(1,((cx-A[0])*dx+(cy-A[1])*dy)/l2)),d=Mh.hypot(cx-A[0]-dx*t,cy-A[1]-dy*t);if(d<bd){bd=d;best=id}}}return best}
+function grabOk(){return chk.indexOf('co-')==0}
+addEventListener('pointerdown',e=>{if(mode!='play'||paused||!grabOk())return;if(!e.target.closest('#gm'))gmHide();
+ if(e.target.closest('button,input,textarea,select,#gm,#mpd,.cd,.pn'))return;
  const w=p2w(e.clientX,e.clientY);MC.x=w[0];MC.y=w[1];MC.s=1;MC.t=performance.now();gT={x:e.clientX,y:e.clientY,t:MC.t,id:e.pointerId,down:1};if(GRB.id){GRB.x=w[0];GRB.y=w[1]}},true);
 addEventListener('pointermove',e=>{if(mode!='play')return;const w=p2w(e.clientX,e.clientY);MC.x=w[0];MC.y=w[1];MC.s=1;MC.t=performance.now();if(GRB.id&&gT&&gT.down&&e.pointerId==gT.id){GRB.x=w[0];GRB.y=w[1]}},true);
-addEventListener('pointerup',e=>{if(!gT||e.pointerId!=gT.id)return;const g=gT;gT=null;if(mode!='play'||paused||GRB.id)return;
- if(Mh.hypot(e.clientX-g.x,e.clientY-g.y)<12&&performance.now()-g.t<500){const w=p2w(e.clientX,e.clientY),id=grabAt(w[0],w[1]);
+addEventListener('pointerup',e=>{if(!gT||e.pointerId!=gT.id)return;const g=gT;gT=null;if(mode!='play'||paused||GRB.id||!grabOk())return;
+ if(Mh.hypot(e.clientX-g.x,e.clientY-g.y)<22&&performance.now()-g.t<800){const id=grabAt(e.clientX,e.clientY);
   if(id){gmId=id;const m=$('#gm');$('#gmn').textContent=RM[id].n;m.style.display='flex';const mw=m.offsetWidth;m.style.left=Mh.max(8,Mh.min(innerWidth-mw-8,e.clientX-mw/2))+'px';m.style.top=Mh.max(8,e.clientY-m.offsetHeight-20)+'px'}}},true);
 addEventListener('pointercancel',()=>{gT=null},true);
 $('#gmy').onclick=()=>{const id=gmId;gmHide();if(!id||!RM[id])return;GRB.id=id;const q=RM[id].q||RM[id].p;GRB.x=q[2][0];GRB.y=q[2][1];$('#bGr').style.display='block';toast('Схвачен: '+RM[id].n+'. Води пальцем по экрану, чтобы тащить')};
@@ -1206,7 +1209,7 @@ function mmTick(t){if(!ch||ch.state!='joined'||mode!='play'||t-mpM<90)return;mpM
  if(GRB.id){if(!RM[GRB.id]){GRB.id=null;$('#bGr').style.display='none';toast('Игрок ушёл')}else ch.send({type:'broadcast',event:'g',payload:{i:MID,to:GRB.id,x:+GRB.x.toFixed(2),y:+GRB.y.toFixed(2),on:1}})}
  if(S.mm&&MC.s&&performance.now()-MC.t<3000)ch.send({type:'broadcast',event:'m',payload:{i:MID,x:+MC.x.toFixed(2),y:+MC.y.toFixed(2)}})}
 function mpMouse(q){if(!q||q.i==MID||!isFinite(q.x)||!isFinite(q.y))return;const r=RMC[q.i]||(RMC[q.i]={});r.x=+q.x;r.y=+q.y;r.t=performance.now()}
-function mpGrab(q){if(!q||q.to!==MID)return;
+function mpGrab(q){if(!q||q.to!==MID||!grabOk())return;
  if(q.on){if(S.ng||mode!='play')return;const f=!GRD;GRD={x:+q.x||0,y:+q.y||0,t:performance.now(),by:q.i};if(f){const r=RM[q.i];toast('✋ Тебя схватил '+(r?r.n:'игрок'))}}
  else if(GRD&&GRD.by===q.i){GRD=null;toast('Тебя отпустили')}}
 function grabPull(d){if(performance.now()-GRD.t>1500){GRD=null;return}
@@ -1214,21 +1217,27 @@ function grabPull(d){if(performance.now()-GRD.t>1500){GRD=null;return}
  const c=P[2],k=Mh.min(1,12*d),mx=Mh.max(-.6,Mh.min(.6,(GRD.x-c.x)*k)),my=Mh.max(-.6,Mh.min(.6,(GRD.y-c.y)*k));
  for(const p of P){p.x+=mx;p.y+=my;p.ox=p.x-mx*.2;p.oy=p.y-my*.2}}
 function mmDraw(g,pr){const now=performance.now(),k=(cv.width/innerWidth)*1.25;
- for(const id in RMC){const r=RMC[id];if(now-r.t>3000){delete RMC[id];continue}
+ for(const id in RMC){const r=RMC[id];if(now-r.t>3000){delete RMC[id];continue}if(S.sm===0)continue;
   r.dx=r.dx==null?r.x:r.dx+(r.x-r.dx)*.4;r.dy=r.dy==null?r.y:r.dy+(r.y-r.dy)*.4;
   const[x,y]=pr(r.dx,r.dy),col='hsl('+([...id].reduce((h,c)=>(h*31+c.charCodeAt(0))>>>0,7)%360)+',80%,55%)';
   g.save();g.translate(x,y);g.scale(k,k);g.beginPath();g.moveTo(0,0);g.lineTo(0,17);g.lineTo(4.5,13.2);g.lineTo(7.6,20.5);g.lineTo(10.6,19.2);g.lineTo(7.6,12);g.lineTo(13,12);g.closePath();g.fillStyle=col;g.fill();g.lineWidth=1.6;g.strokeStyle='#fff';g.stroke();g.restore()}
  if(GRB.id&&RM[GRB.id]){const[x,y]=pr(GRB.x,GRB.y),r=RM[GRB.id],q=r.q||r.p,[sx,sy]=pr(q[2][0],q[2][1]),kk=cv.width/innerWidth;g.save();g.strokeStyle='rgba(255,255,255,.85)';g.lineWidth=3*kk;g.setLineDash([8*kk,6*kk]);g.beginPath();g.moveTo(sx,sy);g.lineTo(x,y);g.stroke();g.setLineDash([]);g.font=(34*kk|0)+'px sans-serif';g.textAlign='center';g.textBaseline='middle';g.fillText('✊',x,y);g.restore()}}
-function mmUi(){$('#mmt').textContent='🖱 Моя мышка видна другим (без ника): '+(S.mm?'ВКЛ ✔':'выкл');$('#mgt').textContent='✋ Другим можно хватать меня: '+(S.ng?'нет':'да ✔')}
-$('#mmt').onclick=()=>{S.mm=S.mm?0:1;save();mmUi()};$('#mgt').onclick=()=>{S.ng=S.ng?0:1;save();mmUi()};
+function mmUi(){$('#met').textContent='🖱 Моя мышка видна в совместном редакторе: '+(S.me===0?'выкл':'ВКЛ ✔');$('#mst').textContent='👁 Показывать мышки других: '+(S.sm===0?'выкл':'ВКЛ ✔');$('#mmt').textContent='🖱 Моя мышка видна другим в игре (без ника): '+(S.mm?'ВКЛ ✔':'выкл');$('#mgt').textContent='✋ Другим можно хватать меня: '+(S.ng?'нет':'да ✔')}
+$('#mmt').onclick=()=>{S.mm=S.mm?0:1;save();mmUi()};$('#met').onclick=()=>{S.me=S.me===0?1:0;save();mmUi()};$('#mst').onclick=()=>{S.sm=S.sm===0?1:0;save();mmUi()};$('#mgt').onclick=()=>{S.ng=S.ng?0:1;save();mmUi()};
 mmUi();
 
 
 // ---------- реалистичный режим (только у владельцев редактора скинов; в мультиплеере — для всех на карте) ----------
+function rlOwn(){return RLB||(S.rl&&ged())}
 const RL=()=>(S.rl&&ged())||RLB||performance.now()-RLRt<4000,
 chT=(h,t)=>{const n=parseInt(h.slice(1),16),m=(v,c)=>(v+(c-v)*t*.85)|0;return'rgb('+m(n>>16&255,26)+','+m(n>>8&255,20)+','+m(n&255,16)+')'},
 goreOn=()=>mode=='play'&&(BL.length||GB.length||BD.length||burn>0);
 function rlReset(){gibClear();LB.a=[0,0];LB.l=[0,0];LS[0]=LS[1]=LS[2]=LS[3]=0;BL.length=GB.length=BD.length=0;burn=chr=dead=sawT=CRW=dn=wasT=hurtT=0;W.cr=0;L[0]=.6;L[1]=.5;L[2]=.45;L[3]=.45}
+function gSend(o){if(ch&&ch.state=='joined'&&mode=='play')try{ch.send({type:'broadcast',event:'x',payload:Object.assign({i:MID,sk:S.skin},o)})}catch(e){}}
+function mpGore(q){if(!q||q.i==MID||mode!='play'||!RL()||!isFinite(q.x)||!isFinite(q.y))return;const x=+q.x,y=+q.y;
+ if(q.t=='b')blood(x,y,Mh.max(0,Mh.min(50,q.n|0)),Mh.max(1,Mh.min(8,+q.v||4)));
+ else if(q.t=='c'&&(q.k=='a'||q.k=='l')){GB.push({x,y,vx:(Mh.random()-.5)*6,vy:2+Mh.random()*3,a:Mh.random()*6.28,w:(Mh.random()-.5)*16,len:q.k=='a'?.6:.9,k:q.k,t:0,rest:0,kk:q.sk|0});blood(x,y,28,6);BD.push({k:q.k,t:7,rid:q.i});while(GB.length>30)gibDrop(GB.shift())}}
+function bdPt(b){if(!b.rid)return b.k=='a'?P[1]:P[2];const r=RM[b.rid];if(!r||!r.p)return null;const a=(r.q||r.p)[b.k=='a'?1:2];return{x:a[0],y:a[1]}}
 function blood(x,y,n,s){for(let i=0;i<n;i++){if(BL.length>500)BL.splice(0,60);BL.push({x,y,vx:(Mh.random()-.5)*s*2,vy:Mh.random()*s,t:0,life:6+Mh.random()*6,r:.025+Mh.random()*.045,st:0})}}
 function fire(x,y){if(BL.length>500)BL.splice(0,60);BL.push({x,y,vx:(Mh.random()-.5)*.6,vy:1+Mh.random()*1.4,t:0,life:.35+Mh.random()*.35,r:.06+Mh.random()*.07,f:1})}
 function collapse(){
@@ -1241,13 +1250,13 @@ function cutLimb(k){
  const i=c[Mh.random()*c.length|0];ar[i]=1;
  const p=k=='a'?P[1]:P[2],cl=v=>Mh.max(-8,Mh.min(8,v));
  GB.push({x:p.x,y:p.y,vx:(Mh.random()-.5)*6+cl((p.x-p.ox)/pdt*.3),vy:2+Mh.random()*3,a:Mh.random()*6.28,w:(Mh.random()-.5)*16,len:k=='a'?.6:.9,k,t:0,rest:0});
- blood(p.x,p.y,28,6);BD.push({k,t:7});
+ blood(p.x,p.y,28,6);BD.push({k,t:7});gSend({t:'c',k,x:+p.x.toFixed(2),y:+p.y.toFixed(2)});
  if(LB.a[0]&&LB.a[1]&&P[0].pin)release();
  collapse();
  if(W.on&&!W.cr&&LB.l[0]&&LB.l[1])fall();
  if(W.cr&&LB.a[0]&&LB.a[1])fall();
 }
-function rlDie(){const c=P[2];blood(c.x,c.y,50,8);cutLimb('a');cutLimb('a');cutLimb('l');cutLimb('l');dead=1;burn=0;release();fall();toast('Ты погиб: «Сброс» вернёт на спавн')}
+function rlDie(){const c=P[2];blood(c.x,c.y,50,8);gSend({t:'b',x:+c.x.toFixed(2),y:+c.y.toFixed(2),n:50,v:8});cutLimb('a');cutLimb('a');cutLimb('l');cutLimb('l');dead=1;burn=0;release();fall();toast('Ты погиб: «Сброс» вернёт на спавн')}
 // урон от падения: резкое касание земли на большой скорости
 const rlSoft=()=>(M.ob||[]).some(o=>(o[0]=='wt'||o[0]=='jl')&&P.some(p=>{const b=OB[o[0]](o),q=lp(o,p.x,p.y);return q[0]>b[0]-.3&&q[0]<b[2]+.3&&q[1]>b[1]-.3&&q[1]<b[3]+.3}));
 function impactChk(dt){
@@ -1257,14 +1266,14 @@ function impactChk(dt){
  if(t&&!wasT){const v=dn;dn=0;if(v>11&&hurtT<=0&&!rlSoft())hurt(v)}
  wasT=t}
 function hurt(v){
- hurtT=.6;const c=P[2];blood(c.x,c.y,Mh.min(40,v|0),4);
+ hurtT=.6;const c=P[2];blood(c.x,c.y,Mh.min(40,v|0),4);gSend({t:'b',x:+c.x.toFixed(2),y:+c.y.toFixed(2),n:Mh.min(40,v|0),v:4});
  if(v>=21){rlDie();return}
  const n=v>=16?1+(Mh.random()<.5?1:0):(Mh.random()<.6?1:0);
  for(let i=0;i<n;i++)cutLimb(Mh.random()<.5?'a':'l');
  toast('Травма от падения')}
 // оторванные конечности в 3D
 function mkGib(q){
- const k3=SK3[S.skin]||SK3[0],g=new THREE.Group(),r=q.k=='a'?.05:.055,tint=m=>{if(chr>.01)m.color.lerp(new THREE.Color(0x1a1410),chr*.85);return m},
+ const k3=SK3[q.kk==null?S.skin:q.kk]||SK3[0],g=new THREE.Group(),r=q.k=='a'?.05:.055,tint=m=>{if(chr>.01)m.color.lerp(new THREE.Color(0x1a1410),chr*.85);return m},
  m=tint(MT((q.k=='a'?k3[2]:k3[3])||'#888888'));
  const cy=new THREE.Mesh(CG,m);cy.scale.set(r,q.len,r);cy.rotation.z=Mh.PI/2;g.add(cy);
  const cap=new THREE.Mesh(SPH(),MT(0xa10c0c));cap.scale.setScalar(r*1.5);cap.position.x=-q.len/2;g.add(cap);
@@ -1273,7 +1282,8 @@ function mkGib(q){
  else{en=new THREE.Mesh(new THREE.BoxGeometry(.26,.045,.1),tint(MT(0xe9e5d2)));en.position.set(q.len/2+.04,-.06,0)}
  g.add(en);g.traverse(o=>{if(o.isMesh)o.castShadow=!!S.shd});sc3.add(g);return g}
 function gibSync(){if(!sc3)return;for(const q of GB){if(!q.m)q.m=mkGib(q);q.m.position.set(q.x,q.y,0);q.m.rotation.z=q.a}}
-function gibClear(){for(const q of GB)if(q.m){if(sc3)sc3.remove(q.m);q.m.traverse(o=>{if(o.material)o.material.dispose();if(o.geometry&&o.geometry!==CG)o.geometry.dispose()});q.m=0}}
+function gibDrop(q){if(q.m){if(sc3)sc3.remove(q.m);q.m.traverse(o=>{if(o.material)o.material.dispose();if(o.geometry&&o.geometry!==CG)o.geometry.dispose()});q.m=0}}
+function gibClear(){for(const q of GB)gibDrop(q)}
 // пилы режут конечности (по звеньям тела), торс — смерть; лава поджигает
 function rlHaz(dt){
  sawT-=dt;hurtT-=dt;impactChk(dt);if(dead)return 0;let lava=0,hit=-1;
@@ -1286,10 +1296,13 @@ function rlHaz(dt){
  if(hit==1){rlDie();return 0}
  if(hit>=0&&sawT<=0){sawT=.4;cutLimb(hit?'l':'a')}
  return 0}
+var rlWas=0;
 function goreStep(dt){
  if(mode!='play')return;
  const g=GV[S.grav];
- if(burn>0&&!RL())burn=0;
+ const rn=RL();if(rlWas&&!rn)rlReset();rlWas=rn;
+ if(burn>0&&!rn)burn=0;
+ if(rn){const nw=performance.now();for(const id in RM){const r=RM[id];if(r.bn&&r.p&&nw-r.t<1500&&Mh.random()<dt*60){const a=r.q||r.p,p=a[Mh.random()*5|0];fire(p[0]+(Mh.random()-.5)*.2,p[1]+(Mh.random()-.5)*.2)}}}
  if(burn>0)for(let k=0;k<2;k++)if(Mh.random()<dt*60){const p=P[Mh.random()*5|0];fire(p.x+(Mh.random()-.5)*.2,p.y+(Mh.random()-.5)*.2)}
  for(let i=BL.length;i--;){const b=BL[i];b.t+=dt;if(b.t>b.life){BL.splice(i,1);continue}
   if(b.f){b.x+=b.vx*dt;b.y+=b.vy*dt;b.vx*=1-1.5*dt;continue}
@@ -1299,17 +1312,17 @@ function goreStep(dt){
   if(q.y<fl&&q.y>(M.gy||0)-1){q.y=fl;if(Mh.abs(q.vy)>1.2){q.vy*=-.3;q.vx*=.6;q.w*=.6;blood(q.x,q.y,3,2)}else{q.vy=0;q.vx*=.85;q.w*=.8;if(Mh.abs(q.vx)<.05&&Mh.abs(q.w)<.1)q.rest=1}}
   if(q.y<-80)q.rest=1;
   if(q.t<1.5&&Mh.random()<dt*18)blood(q.x,q.y,1,1.2)}
- for(let i=BD.length;i--;){const b=BD[i];b.t-=dt;if(b.t<=0){BD.splice(i,1);continue}const p=b.k=='a'?P[1]:P[2];if(Mh.random()<dt*16)blood(p.x,p.y,1,1.5)}
+ for(let i=BD.length;i--;){const b=BD[i];b.t-=dt;if(b.t<=0){BD.splice(i,1);continue}const p=bdPt(b);if(!p){BD.splice(i,1);continue}if(Mh.random()<dt*16)blood(p.x,p.y,1,1.5)}
 }
 function goreDraw(g,pr){
  const K=SK[S.skin]||SK[0],vz=(x,y)=>!R3||v3(x,y,0).project(cam3).z<1,mx=cv.height*.04,
  sx=(x,y)=>{const a=pr(x,y),b=pr(x+1,y);return Mh.min(Mh.hypot(b[0]-a[0],b[1]-a[1])||1,cv.height*.25)};
  g.save();g.lineCap='round';
- if(!R3)for(const q of GB){const sc=sx(q.x,q.y),dx=Mh.cos(q.a)*q.len/2,dy=Mh.sin(q.a)*q.len/2,A=pr(q.x-dx,q.y-dy),B=pr(q.x+dx,q.y+dy);
+ if(!R3)for(const q of GB){const K=SK[q.kk==null?S.skin:q.kk]||SK[0],sc=sx(q.x,q.y),dx=Mh.cos(q.a)*q.len/2,dy=Mh.sin(q.a)*q.len/2,A=pr(q.x-dx,q.y-dy),B=pr(q.x+dx,q.y+dy);
   g.beginPath();g.moveTo(A[0],A[1]);g.lineTo(B[0],B[1]);g.strokeStyle=K[1];g.lineWidth=.2*sc;g.stroke();g.strokeStyle=K[0];g.lineWidth=.15*sc;g.stroke();
   g.fillStyle='#a10c0c';g.beginPath();g.arc(A[0],A[1],.085*sc,0,7);g.fill();
   if(q.k=='a'){g.fillStyle='#e9e5d2';g.beginPath();g.arc(B[0],B[1],.085*sc,0,7);g.fill()}}
- for(const b of BD){const p=b.k=='a'?P[1]:P[2];if(!vz(p.x,p.y))continue;const c=pr(p.x,p.y),sc=sx(p.x,p.y);g.fillStyle='#b00e0e';g.beginPath();g.arc(c[0],c[1],Mh.min(mx,.075*sc),0,7);g.fill()}
+ for(const b of BD){const p=bdPt(b);if(!p||!vz(p.x,p.y))continue;const c=pr(p.x,p.y),sc=sx(p.x,p.y);g.fillStyle='#b00e0e';g.beginPath();g.arc(c[0],c[1],Mh.min(mx,.075*sc),0,7);g.fill()}
  for(const b of BL){if(!vz(b.x,b.y))continue;const p=pr(b.x,b.y),r=Mh.min(mx,Mh.max(1.5,b.r*sx(b.x,b.y)));
   if(b.f){const t=b.t/b.life;g.fillStyle='rgba(255,'+((210-180*t)|0)+',25,'+(.85*(1-t))+')';g.beginPath();g.arc(p[0],p[1],r*(1.1-.5*t),0,7);g.fill();continue}
   const a=Mh.min(1,(b.life-b.t)/2);g.fillStyle='rgba('+(b.st?125:175)+',8,10,'+a+')';g.beginPath();if(b.st)g.ellipse(p[0],p[1],r*1.8,r*.6,0,0,7);else g.arc(p[0],p[1],r,0,7);g.fill()}
@@ -1331,8 +1344,9 @@ function crawlStep(dt){
 }
 // переключатели (только у тех, у кого есть редактор скинов)
 function rlRow(par,h,f,txt,cls){const u=row(par,h,[-1,1],f,txt);par.lastChild.classList.add(cls);ups.push(u)}
-const rlF=()=>{if(!ged())return;S.rl=S.rl?0:1;toast(S.rl?'Реалистичный режим: вкл':'Реалистичный режим: выкл')},rlT=()=>S.rl?'вкл':'выкл';
+const rlF=()=>{if(!ged())return;S.rl=S.rl?0:1;toast(S.rl?'Реалистичный режим: вкл (на карте — для всех)':'Реалистичный режим: выкл')},rlT=()=>S.rl?'вкл':'выкл';
 rlRow($('#p2'),'Реалистичный режим',rlF,rlT,'rlr');
+for(const pr of[$('#p2'),$('#s1')]){ups.push(row(pr,'Моя мышка другим',[-1,1],()=>{S.mm=S.mm?0:1},()=>S.mm?'вкл':'выкл'));ups.push(row(pr,'Мышки других',[-1,1],()=>{S.sm=S.sm===0?1:0},()=>S.sm===0?'выкл':'вкл'))}
 rlRow($('#s1'),'Реалистичный режим',rlF,rlT,'rlr');
 rlRow($('#p2'),'Для всех на карте',()=>{if(!(ch&&ch.state=='joined')){toast('Только в мультиплеере, на карте');return}RLB=RLB?0:1;toast(RLB?'Реалистичный режим включён для всех на этой карте':'Для всех выключено')},()=>RLB?'вкл':'выкл','rlr2');
 function rlVis(){const g=ged(),m=!!(ch&&ch.state=='joined');$$('.rlr').forEach(e=>e.style.display=g?'':'none');$$('.rlr2').forEach(e=>e.style.display=g&&m?'':'none')}
