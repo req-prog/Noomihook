@@ -363,7 +363,7 @@ function toggleWalk(){
  if(W.on||SU.on||SU.want){fall();return}
  if(dead)return;CRW=LB.l[0]&&LB.l[1]?1:0;if(CRW&&LB.a[0]&&LB.a[1]){toast('Нет ни рук, ни ног: ползти нечем');return}release();rag=1;SU.want=1;SU.wt=0;$('#bRag').classList.remove('dn');cd=.5;hudUp()
 }
-function fall(){if(W.on){const vx=Mh.max(-6,Mh.min(6,W.vx+(W.bx||0))),vy=W.cr?0:Mh.max(-12,Mh.min(3,W.vy||0));for(const p of P){p.ox=p.x-vx*pdt;p.oy=p.y-vy*pdt}}else if(SU.on)for(const p of P){p.ox=p.x;p.oy=p.y}gd=Mh.max(gd,.3);W.on=0;W.cr=0;CRW=0;SU.on=SU.want=0;rag=1;$('#bRag').classList.add('dn');hudUp()}
+function fall(){const run=!!W.on&&!W.cr;if(W.on){const vx=Mh.max(-14,Mh.min(14,W.vx+(W.l||0)*1.2+(W.bx||0))),vy=W.cr?0:Mh.max(-14,Mh.min(6,W.vy||0));for(const p of P){p.ox=p.x-vx*pdt;p.oy=p.y-vy*pdt}}else if(SU.on)for(const p of P){p.ox=p.x;p.oy=p.y}if(!run)gd=Mh.max(gd,.3);W.on=0;W.cr=0;CRW=0;SU.on=SU.want=0;rag=1;$('#bRag').classList.add('dn');hudUp()}
 // ---------- вставание: ключевые позы, FK от бедра, земля всегда касается самой нижней точки ----------
 const W2=a=>{a%=2*Mh.PI;return a>Mh.PI?a-2*Mh.PI:a<-Mh.PI?a+2*Mh.PI:a},LN=(a,b,t)=>a+(b-a)*t,EZ=t=>t<.5?2*t*t:1-2*(1-t)*(1-t);
 // s: tor — наклон корпуса (+ вперёд), th — бедро от вертикали вниз (+ вперёд), kn — сгибание колена, hx — x бедра
@@ -452,7 +452,7 @@ function walkStep(dt){
  if(W.jp)W.jt=.22;W.jt=Mh.max(0,(W.jt||0)-dt);pcd-=dt;inW=0;const oy=W.y;W.jp=0;W.vy-=g*dt*(wt?.25:1)*Z.gm;W.vy+=Z.ay*dt;if(wt)W.vy*=Mh.exp(-2.5*dt);if(Z.dv)W.vy*=Mh.exp(-Z.dv*dt);W.vy=Mh.max(-30,Mh.min(22,W.vy));W.y+=W.vy*dt;walkTr(oy,g);
  const f2=flr(W.x,W.y);
  if(W.y<=f2){if(W.vy<-2.5)W.lv+=(Mh.random()-.5)*Mh.min(10,-W.vy*1.6);W.y=f2;W.vy=0}
- W.vx+=(d*(wt?1.1:1.5)*Z.sp-W.vx)*Mh.min(1,(gr||wt||Z.fl?5:1)*dt);W.bx=Mh.max(-12,Mh.min(12,((W.bx||0)+Z.ax*dt)*Mh.exp(-(Z.dh+(gr?3:.7))*dt)));W.x+=(W.vx+W.l*1.2+W.bx)*dt;
+ {const tg=d*(wt?1.1:1.5)*Z.sp,air=!(gr||wt||Z.fl);if(!(air&&(!d||(d*W.vx>0&&Mh.abs(W.vx)>=Mh.abs(tg)))))W.vx+=(tg-W.vx)*Mh.min(1,(air?1:5)*dt)}W.bx=Mh.max(-12,Mh.min(12,((W.bx||0)+Z.ax*dt)*Mh.exp(-(Z.dh+(gr?3:.7))*dt)));W.x+=(W.vx+W.l*1.2+W.bx)*dt;
  for(const b of BXs())if(W.y<b[3]-.05&&W.x>b[0]-.2&&W.x<b[2]+.2){W.x=W.x<(b[0]+b[2])/2?b[0]-.2:b[2]+.2;W.vx=0;W.bx=0}
  W.ph+=Mh.abs(W.vx)*dt*4;
  W.lv+=(7*W.l-11*(W.l-d*.2)-2.4*W.lv+(Mh.random()-.5)*(10+14*Mh.abs(W.vx)))*dt;W.l+=W.lv*dt;
@@ -672,9 +672,9 @@ function edTap(cx_,cy_){const rx=EX+(cx_*dpr-cv.width/2)/C.sc,ry=EY-(cy_*dpr-cv.
  else{if(y<0)return;const y0=Mh.max(0,y-.6),kl=tool=='kl',bk=tool=='bk';EM.box.push([x-.6,y0,x+.6,y0+1.2,1.8,0,0,kl?5:bk?1:0,kl?1:0,0,0,bk?1:0])}
  pushH()}
 let pd=null;
-$('#ed').onpointerdown=e=>{if(e.target.id!='ed')return;mcW(e);pd={x:e.clientX,y:e.clientY,ex:EX,ey:EY,m:0};if(rzOk()&&!v3d){const h=hdl().find(q=>{const c=scr(q[0],q[1]);return Mh.hypot(c[0]-e.clientX,c[1]-e.clientY)<24});if(h){pd.h=h;pd.m=1}}if(!pd.h&&selo&&!v3d){const rx=EX+(e.clientX*dpr-cv.width/2)/C.sc,ry=EY-(e.clientY*dpr-cv.height/2)/C.sc,o=near(rx,ry);if(o&&selAll().some(q=>q.t==o.t&&q.i==o.i)){pd.d=selAll().map(q=>[q,getO(q).slice()]);pd.rx=rx;pd.ry=ry}}$('#ed').setPointerCapture(e.pointerId)};
-$('#ed').onpointermove=e=>{mcW(e);if(!pd)return;const dx=e.clientX-pd.x,dy=e.clientY-pd.y;if(Mh.hypot(dx,dy)>8)pd.m=1;if(pd.d&&pd.m){const rx=EX+(e.clientX*dpr-cv.width/2)/C.sc,ry=EY-(e.clientY*dpr-cv.height/2)/C.sc,sn=v=>Mh.round(v/gs)*gs,ddx=sn(rx-pd.rx),ddy=sn(ry-pd.ry);for(const[q,o0]of pd.d){const o=getO(q);o0.forEach((v,i)=>o[i]=v);mvO(q,o,ddx,ddy)}pd.dm=1;edDirty=1;selUi();return}if(pd.h){const o=selo.t==2?EM.ob[selo.i]:null,b=o?hbnd().slice():EM.box[selo.i],c0=[(b[0]+b[2])/2,(b[1]+b[3])/2],an=selAng(),rx0=EX+(e.clientX*dpr-cv.width/2)/C.sc,ry0=EY-(e.clientY*dpr-cv.height/2)/C.sc,lq=rotW([c0[0],c0[1],c0[0],c0[1]],rx0,ry0,-an),rx=lq[0],ry=lq[1],sn=v=>Mh.round(v/gs)*gs,h=pd.h;if(h[2]<0)b[0]=Mh.min(sn(rx),b[2]-gs);if(h[2]>0)b[2]=Mh.max(sn(rx),b[0]+gs);if(h[3]<0)b[1]=Mh.min(sn(ry),b[3]-gs);if(h[3]>0)b[3]=Mh.max(sn(ry),b[1]+gs);if(an){const d=[(b[0]+b[2])/2-c0[0],(b[1]+b[3])/2-c0[1]],w=rotW([0,0,0,0],d[0],d[1],an),sx=w[0]-d[0],sy=w[1]-d[1];b[0]+=sx;b[2]+=sx;b[1]+=sy;b[3]+=sy;if(o&&o[0]=='tr')o[2]=b[3]}if(o){while(o.length<7)o.push(null);o[1]=+((b[0]+b[2])/2).toFixed(3);o[5]=+(b[2]-b[0]).toFixed(3);if(ZT.includes(o[0])){o[2]=+((b[1]+b[3])/2).toFixed(3);o[6]=+(b[3]-b[1]).toFixed(3)}}edDirty=1;selUi();return}if(pd.m){EX=pd.ex-dx*dpr/C.sc;EY=pd.ey+dy*dpr/C.sc}};
-$('#ed').onpointerup=e=>{if(pd&&(pd.h||pd.dm))pushH();else if(pd&&!pd.m)edTap(e.clientX,e.clientY);pd=null};
+$('#ed').onpointerdown=e=>{if(e.target.id!='ed')return;mcW(e);if(!e.target.closest('#gm'))gmHide();if(GRB.id){const w=edP(e);GRB.x=w[0];GRB.y=w[1];gdn=1;$('#ed').setPointerCapture(e.pointerId);return}pd={x:e.clientX,y:e.clientY,ex:EX,ey:EY,m:0};if(rzOk()&&!v3d){const h=hdl().find(q=>{const c=scr(q[0],q[1]);return Mh.hypot(c[0]-e.clientX,c[1]-e.clientY)<24});if(h){pd.h=h;pd.m=1}}if(!pd.h&&selo&&!v3d){const rx=EX+(e.clientX*dpr-cv.width/2)/C.sc,ry=EY-(e.clientY*dpr-cv.height/2)/C.sc,o=near(rx,ry);if(o&&selAll().some(q=>q.t==o.t&&q.i==o.i)){pd.d=selAll().map(q=>[q,getO(q).slice()]);pd.rx=rx;pd.ry=ry}}$('#ed').setPointerCapture(e.pointerId)};
+$('#ed').onpointermove=e=>{mcW(e);if(gdn&&GRB.id){const w=edP(e);GRB.x=w[0];GRB.y=w[1];return}if(!pd)return;const dx=e.clientX-pd.x,dy=e.clientY-pd.y;if(Mh.hypot(dx,dy)>8)pd.m=1;if(pd.d&&pd.m){const rx=EX+(e.clientX*dpr-cv.width/2)/C.sc,ry=EY-(e.clientY*dpr-cv.height/2)/C.sc,sn=v=>Mh.round(v/gs)*gs,ddx=sn(rx-pd.rx),ddy=sn(ry-pd.ry);for(const[q,o0]of pd.d){const o=getO(q);o0.forEach((v,i)=>o[i]=v);mvO(q,o,ddx,ddy)}pd.dm=1;edDirty=1;selUi();return}if(pd.h){const o=selo.t==2?EM.ob[selo.i]:null,b=o?hbnd().slice():EM.box[selo.i],c0=[(b[0]+b[2])/2,(b[1]+b[3])/2],an=selAng(),rx0=EX+(e.clientX*dpr-cv.width/2)/C.sc,ry0=EY-(e.clientY*dpr-cv.height/2)/C.sc,lq=rotW([c0[0],c0[1],c0[0],c0[1]],rx0,ry0,-an),rx=lq[0],ry=lq[1],sn=v=>Mh.round(v/gs)*gs,h=pd.h;if(h[2]<0)b[0]=Mh.min(sn(rx),b[2]-gs);if(h[2]>0)b[2]=Mh.max(sn(rx),b[0]+gs);if(h[3]<0)b[1]=Mh.min(sn(ry),b[3]-gs);if(h[3]>0)b[3]=Mh.max(sn(ry),b[1]+gs);if(an){const d=[(b[0]+b[2])/2-c0[0],(b[1]+b[3])/2-c0[1]],w=rotW([0,0,0,0],d[0],d[1],an),sx=w[0]-d[0],sy=w[1]-d[1];b[0]+=sx;b[2]+=sx;b[1]+=sy;b[3]+=sy;if(o&&o[0]=='tr')o[2]=b[3]}if(o){while(o.length<7)o.push(null);o[1]=+((b[0]+b[2])/2).toFixed(3);o[5]=+(b[2]-b[0]).toFixed(3);if(ZT.includes(o[0])){o[2]=+((b[1]+b[3])/2).toFixed(3);o[6]=+(b[3]-b[1]).toFixed(3)}}edDirty=1;selUi();return}if(pd.m){EX=pd.ex-dx*dpr/C.sc;EY=pd.ey+dy*dpr/C.sc}};
+$('#ed').onpointerup=e=>{if(gdn){gdn=0;pd=null;return}if(pd&&(pd.h||pd.dm))pushH();else if(pd&&!pd.m){if(!edGrab(e))edTap(e.clientX,e.clientY)}pd=null};
 $('#ed').onclick=e=>{const pr=e.target.closest('#pop [data-k]');if(pr&&selo&&selo.t==1){const b=EM.box[selo.i],k=+pr.dataset.k;b[k]=pr.dataset.v!=null?+pr.dataset.v:(b[k]?0:1);pushH();popUp();return}
  const dd=e.target.closest('[data-d]'),cc=e.target.closest('[data-c]'),mm=e.target.closest('[data-m]');
  if(mm){pm=+mm.dataset.m;if(pm==2)toast('Вращение: ползунок или цифры — любой угол, стрелки — на 90°');selUi();return}if(dd&&selo){dpad(dd.dataset.d);return}if(cc&&selo){tbar(cc.dataset.c);return}
@@ -685,7 +685,7 @@ $('#ed').onclick=e=>{const pr=e.target.closest('#pop [data-k]');if(pr&&selo&&sel
  else if(a=='gs'){gs=[.5,1,.25][([.5,1,.25].indexOf(gs)+1)%3];ui()}else if(a=='del'&&selo)delMany(selAll());
  else if(a=='test'){commit();coTest();const m=S.cust[ei];M=m;bld=null;sp=m.st||0;fromEd=1;show('hud');spawn()}};
 $('#en').oninput=e=>{S.cust[ei].n=e.target.value||'Без названия';save()};
-function edOver(){edOver0();const pr=(x,y)=>[cv.width/2+(x-EX)*C.sc,cv.height/2-(y-EY)*C.sc];if(!R3)mp2(cx,pr,C.sc);coDraw(cx,pr)}
+function edOver(){edOver0();const pr=(x,y)=>[cv.width/2+(x-EX)*C.sc,cv.height/2-(y-EY)*C.sc];if(!R3)mp2(cx,pr,C.sc);coDraw(cx,pr);if(GRB.id)mmDraw(cx,pr)}
 function edOver0(){const w=cv.width,h=cv.height,s=C.sc,X=x=>w/2+(x-EX)*s,Y=y=>h/2-(y-EY)*s;
  if(gv){const st=gs*s<10?1:gs;cx.lineWidth=1;
   for(let i=Mh.ceil((EX-w/2/s)/st);i*st<EX+w/2/s;i++){const x=i*st;cx.strokeStyle=x%1==0?'rgba(30,60,110,.38)':'rgba(30,60,110,.17)';cx.beginPath();cx.moveTo(X(x),0);cx.lineTo(X(x),h);cx.stroke()}
@@ -972,7 +972,7 @@ let sb=null,ch=null,chk='',RM={},mpT=0,mpS=0,mpE=0;
 const mkOf=m=>'map-'+[...(m.n||'')].reduce((h,c)=>(h*31+c.charCodeAt(0))>>>0,7);
 const mpKey=()=>co.r&&M===S.cust[ei]?'co-'+co.r:mkOf(M);
 function mpDel(k){const r=RM[k];if(r&&r.g)sc3.remove(r.g);if(r&&r.rg&&r.rg.cm)r.rg.cm.forEach(m=>{sc3.remove(m);m.material.dispose()});delete RM[k]}
-function mpLeave(){RLB=0;RLRt=0;GRB.id=null;GRD=null;for(const k in RMC)delete RMC[k];{const bg=document.getElementById('bGr');if(bg)bg.style.display='none'}if(ch&&sb){try{sb.removeChannel(ch)}catch(e){}}ch=null;chk='';for(const k in RM)mpDel(k)}
+function mpLeave(){RLB=0;RLRt=0;GRB.id=null;GRD=null;for(const k in RMC)delete RMC[k];{for(const i of['bGr','bGe']){const bg=document.getElementById(i);if(bg)bg.style.display='none'}}if(ch&&sb){try{sb.removeChannel(ch)}catch(e){}}ch=null;chk='';for(const k in RM)mpDel(k)}
 function mpSync(){
  const want=S.mp&&mode=='ed'&&co.r&&co.c?'co-'+co.r:S.mp&&mode=='play'&&M!==MENU&&!M.ed?mpKey():'';
  if(want===chk)return;
@@ -982,7 +982,7 @@ function mpSync(){
   if(!window.supabase)throw 0;
   sb=sb||supabase.createClient(SBU,SBK);chk=want;
   ch=sb.channel(want,{config:{broadcast:{self:false}}});
-  ch.on('broadcast',{event:'p'},({payload:q})=>{if(q&&q.i!=MID&&Array.isArray(q.p)&&q.p.length==5){const nw=!RM[q.i],r=RM[q.i]||(RM[q.i]={z:((parseInt(q.i,36)%5)-2)*.1});r.p=q.p;r.n=String(q.n||'Игрок').slice(0,14);if(nw&&mode=='ed')toast(r.n+' тестирует карту');r.k=q.k|0;r.lb=q.l?{a:[q.l&1,q.l>>1&1],l:[q.l>>2&1,q.l>>3&1]}:0;if(q.r){if(!RL()&&mode=='play')toast('На этой карте включён реалистичный режим');RLRt=performance.now()}r.bn=q.u?1:0;if(q.cs){const js=JSON.stringify(q.cs);if(js!==r.skj){const k=skCheck({format:'noomihook-skin',c:q.cs.c,p:q.cs.p});if(k){r.skj=js;r.sk=k;r.skv=(r.skv|0)+1}}}r.ta=+q.a||0;r.tg=+q.g||0;r.tw=+q.w||0;r.fd=q.f<0?-1:1;r.td=+q.d||0;r.ts=+q.s||0;r.te=Array.isArray(q.e)&&q.e.length==2?q.e:null;r.t=performance.now()}}).on('broadcast',{event:'m'},({payload:q})=>mpMouse(q)).on('broadcast',{event:'g'},({payload:q})=>mpGrab(q)).on('broadcast',{event:'x'},({payload:q})=>mpGore(q)).subscribe(st=>{if(st=='SUBSCRIBED'&&mode=='play')toast('Мультиплеер: ты на карте онлайн')})
+  ch.on('broadcast',{event:'p'},({payload:q})=>{if(q&&q.i!=MID&&Array.isArray(q.p)&&q.p.length==5){const nw=!RM[q.i],r=RM[q.i]||(RM[q.i]={z:((parseInt(q.i,36)%5)-2)*.1});r.p=q.p;r.n=String(q.n||'Игрок').slice(0,14);if(nw&&mode=='ed')toast(r.n+' тестирует карту');r.k=q.k|0;r.lb=q.l?{a:[q.l&1,q.l>>1&1],l:[q.l>>2&1,q.l>>3&1]}:0;if(q.r){if(!RL()&&mode=='play')toast('На этой карте включён реалистичный режим');RLRt=performance.now()}r.bn=q.u?1:0;if(q.cs){const js=JSON.stringify(q.cs);if(js!==r.skj){const k=skCheck({format:'noomihook-skin',c:q.cs.c,p:q.cs.p});if(k){r.skj=js;r.sk=k;r.skv=(r.skv|0)+1}}}r.ta=+q.a||0;r.tg=+q.g||0;r.tw=+q.w||0;r.fd=q.f<0?-1:1;r.td=+q.d||0;r.ts=+q.s||0;r.te=Array.isArray(q.e)&&q.e.length==2?q.e:null;r.t=performance.now()}}).on('broadcast',{event:'m'},({payload:q})=>{if(q&&q.i!=MID&&q.r)RLRt=performance.now();mpMouse(q)}).on('broadcast',{event:'g'},({payload:q})=>mpGrab(q)).on('broadcast',{event:'x'},({payload:q})=>mpGore(q)).subscribe(st=>{if(st=='SUBSCRIBED'&&mode=='play')toast('Мультиплеер: ты на карте онлайн')})
  }catch(e){mpE=performance.now();chk='';ch=null;toast('Мультиплеер: нет связи')}
 }
 function mpTick(t){
@@ -1063,7 +1063,7 @@ function coOpen(){if(!S.mp){toast('Сначала включи мультипл�
 function coJoin(r,host){coLeave(true);const c=sbc();if(!c){toast('Нет связи');return}co.r=r;co.host=host;co.got=host;
  const ch2=co.c=c.channel('ce-'+r,{config:{broadcast:{self:false}}});
  ch2.on('broadcast',{event:'map'},({payload:q})=>coMap(q))
- .on('broadcast',{event:'c'},({payload:q})=>{if(q&&q.i!=S.uid)RC[q.i]=Object.assign(RC[q.i]||{},{x:+q.x||0,y:+q.y||0,n:String(q.n||'Игрок').slice(0,14),t:performance.now()})})
+ .on('broadcast',{event:'c'},({payload:q})=>{if(q&&q.i!=S.uid&&q.r)RLRt=performance.now();if(q&&q.i!=S.uid&&!q.h)RC[q.i]=Object.assign(RC[q.i]||{},{x:+q.x||0,y:+q.y||0,n:String(q.n||'Игрок').slice(0,14),t:performance.now()})})
  .on('broadcast',{event:'hello'},({payload:q})=>{if(!q||q.i==S.uid||!co.host)return;toast((q.n||'Друг')+' подключился к строительству');ch2.send({type:'broadcast',event:'map',payload:coPay(1)})})
  .on('broadcast',{event:'test'},({payload:q})=>{if(q&&q.i!=S.uid&&mode=='ed')nhAsk((q.n||'Друг')+' запустил тест карты. Играть вместе?',()=>{if(mode=='ed')coRun()})})
  .on('broadcast',{event:'bye'},({payload:q})=>{if(q){delete RC[q.i];toast((q.n||'Друг')+' вышел из строительства')}})
@@ -1080,7 +1080,7 @@ function coSend(){if(!co.c||co.ap)return;clearTimeout(co.tm);co.tm=setTimeout(()
 function coTest(){if(co.c&&co.c.state=='joined')co.c.send({type:'broadcast',event:'test',payload:{i:S.uid,n:S.nick||'Игрок'}})}
 function coRun(){if(co.pend){coApply(co.pend);co.pend=null}commit();const m=S.cust[ei];M=m;bld=null;sp=m.st||0;fromEd=1;show('hud');spawn()}
 function coTick(t){if(co.pend&&mode=='ed'){const q=co.pend;co.pend=null;coApply(q)}else if(co.pend&&co.c&&mode=='play'&&M===S.cust[ei]){const q=co.pend;co.pend=null;coLive(q)}
- if(co.c&&co.c.state=='joined'&&mode=='ed'&&S.me!==0&&t-coC>100){coC=t;co.c.send({type:'broadcast',event:'c',payload:{i:S.uid,n:S.nick||'Игрок',x:+(mcur.s?mcur.x:EX).toFixed(2),y:+(mcur.s?mcur.y:EY).toFixed(2)}})}}
+ if(co.c&&co.c.state=='joined'&&mode=='ed'&&(S.me!==0||rlOwn())&&t-coC>100){coC=t;co.c.send({type:'broadcast',event:'c',payload:{i:S.uid,n:S.nick||'Игрок',r:rlOwn()?1:0,h:S.me===0?1:0,x:+(mcur.s?mcur.x:EX).toFixed(2),y:+(mcur.s?mcur.y:EY).toFixed(2)}})}}
 function coDraw(cx,pr){if(S.sm===0)return;const now=performance.now(),k=(cv.width/innerWidth)*1.25;
  for(const id in RC){const r=RC[id];if(now-r.t>3000){delete RC[id];continue}
   r.dx=r.dx==null?r.x:r.dx+(r.x-r.dx)*.35;r.dy=r.dy==null?r.y:r.dy+(r.y-r.dy)*.35;
@@ -1188,11 +1188,17 @@ function p2w(px_,py_){
  return[C.x+(px_*dpr-cv.width/2)/C.sc,C.y-(py_*dpr-cv.height/2)/C.sc]}
 $('#hud').insertAdjacentHTML('beforeend',`<button class="hb" id="bGr" style="display:none;right:19%;top:34%;width:14%;height:26%;background:rgba(220,40,40,.85);color:#fff;font-weight:800">✋<br>Отпустить игрока</button>`);
 document.body.insertAdjacentHTML('beforeend',`<div id="gm" style="display:none;position:fixed;z-index:70;background:rgba(15,26,48,.96);border-radius:14px;padding:1vh 1vw;gap:1vw;align-items:center;box-shadow:0 .5vh 2vh rgba(0,0,0,.5)"><span id="gmn" style="font-size:3vh;max-width:18vw;overflow:hidden;white-space:nowrap"></span><button id="gmy" class="b r" style="position:relative;padding:1.2vh 1.6vw;font-size:3.2vh">✋ Схватить</button><button id="gmx" class="b" style="position:relative;padding:1.2vh 1.2vw;font-size:3.2vh;background:var(--nv2)">✕</button></div>`);
-let gT=null,gmId=null,mpM=0;
+document.body.insertAdjacentHTML('beforeend',`<button class="hb" id="bGe" style="display:none;position:fixed;right:3%;top:30%;width:14%;height:22%;z-index:60;background:rgba(220,40,40,.9);color:#fff;font-weight:800">✋<br>Отпустить игрока</button>`);
+function grUi(on){const a=$('#bGr'),b=$('#bGe');a.style.display=on&&mode!='ed'?'block':'none';b.style.display=on&&mode=='ed'?'block':'none'}
+let gT=null,gmId=null,mpM=0,gdn=0;
+function gmShow(id,x,y){gmId=id;const m=$('#gm');$('#gmn').textContent=RM[id].n;m.style.display='flex';const mw=m.offsetWidth;m.style.left=Mh.max(8,Mh.min(innerWidth-mw-8,x-mw/2))+'px';m.style.top=Mh.max(8,y-m.offsetHeight-20)+'px'}
+function edGrab(e){if(!grabOk()||GRB.id)return 0;const id=grabAt(e.clientX,e.clientY);if(!id)return 0;gmShow(id,e.clientX,e.clientY);return 1}
+const edP=e=>v3d&&R3?p2w(e.clientX,e.clientY):[mcur.x,mcur.y];
 const gmHide=()=>{$('#gm').style.display='none';gmId=null};
-function w2s(x,y){if(R3&&cam3){cam3.updateMatrixWorld();const v=v3(x,y,0).project(cam3);return[(v.x+1)/2*innerWidth,(1-v.y)/2*innerHeight]}return[((x-C.x)*C.sc+cv.width/2)/dpr,(cv.height/2-(y-C.y)*C.sc)/dpr]}
+function w2s(x,y){if(mode=='ed'&&!(v3d&&R3&&cam3))return scr(x,y);if(R3&&cam3){cam3.updateMatrixWorld();const v=v3(x,y,0).project(cam3);return[(v.x+1)/2*innerWidth,(1-v.y)/2*innerHeight]}return[((x-C.x)*C.sc+cv.width/2)/dpr,(cv.height/2-(y-C.y)*C.sc)/dpr]}
 function grabAt(cx,cy){let best=null,bd=48;for(const id in RM){const r=RM[id];if(!r.p||performance.now()-r.t>4000)continue;const q=(r.q||r.p).map(a=>w2s(a[0],a[1]));for(let i=0;i<4;i++){const A=q[i],B=q[i+1],dx=B[0]-A[0],dy=B[1]-A[1],l2=dx*dx+dy*dy||1e-6,t=Mh.max(0,Mh.min(1,((cx-A[0])*dx+(cy-A[1])*dy)/l2)),d=Mh.hypot(cx-A[0]-dx*t,cy-A[1]-dy*t);if(d<bd){bd=d;best=id}}}return best}
-function grabOk(){return chk.indexOf('co-')==0}
+const inCo=()=>chk.indexOf('co-')==0;
+function grabOk(){return inCo()&&(mode=='ed'||ged())}
 addEventListener('pointerdown',e=>{if(mode!='play'||paused||!grabOk())return;if(!e.target.closest('#gm'))gmHide();
  if(e.target.closest('button,input,textarea,select,#gm,#mpd,.cd,.pn'))return;
  const w=p2w(e.clientX,e.clientY);MC.x=w[0];MC.y=w[1];MC.s=1;MC.t=performance.now();gT={x:e.clientX,y:e.clientY,t:MC.t,id:e.pointerId,down:1};if(GRB.id){GRB.x=w[0];GRB.y=w[1]}},true);
@@ -1201,15 +1207,15 @@ addEventListener('pointerup',e=>{if(!gT||e.pointerId!=gT.id)return;const g=gT;gT
  if(Mh.hypot(e.clientX-g.x,e.clientY-g.y)<22&&performance.now()-g.t<800){const id=grabAt(e.clientX,e.clientY);
   if(id){gmId=id;const m=$('#gm');$('#gmn').textContent=RM[id].n;m.style.display='flex';const mw=m.offsetWidth;m.style.left=Mh.max(8,Mh.min(innerWidth-mw-8,e.clientX-mw/2))+'px';m.style.top=Mh.max(8,e.clientY-m.offsetHeight-20)+'px'}}},true);
 addEventListener('pointercancel',()=>{gT=null},true);
-$('#gmy').onclick=()=>{const id=gmId;gmHide();if(!id||!RM[id])return;GRB.id=id;const q=RM[id].q||RM[id].p;GRB.x=q[2][0];GRB.y=q[2][1];$('#bGr').style.display='block';toast('Схвачен: '+RM[id].n+'. Води пальцем по экрану, чтобы тащить')};
+$('#gmy').onclick=()=>{const id=gmId;gmHide();if(!id||!RM[id])return;GRB.id=id;const q=RM[id].q||RM[id].p;GRB.x=q[2][0];GRB.y=q[2][1];grUi(1);toast('Схвачен: '+RM[id].n+'. Води пальцем по экрану, чтобы тащить')};
 $('#gmx').onclick=gmHide;
-function grabStop(){const id=GRB.id;if(!id)return;GRB.id=null;$('#bGr').style.display='none';for(let i=0;i<3;i++)setTimeout(()=>{if(ch&&ch.state=='joined')ch.send({type:'broadcast',event:'g',payload:{i:MID,to:id,x:0,y:0,on:0}})},i*80);toast('Игрок отпущен')}
-tap('#bGr',grabStop);
-function mmTick(t){if(!ch||ch.state!='joined'||mode!='play'||t-mpM<90)return;mpM=t;
- if(GRB.id){if(!RM[GRB.id]){GRB.id=null;$('#bGr').style.display='none';toast('Игрок ушёл')}else ch.send({type:'broadcast',event:'g',payload:{i:MID,to:GRB.id,x:+GRB.x.toFixed(2),y:+GRB.y.toFixed(2),on:1}})}
- if(S.mm&&MC.s&&performance.now()-MC.t<3000)ch.send({type:'broadcast',event:'m',payload:{i:MID,x:+MC.x.toFixed(2),y:+MC.y.toFixed(2)}})}
+function grabStop(){const id=GRB.id;if(!id)return;GRB.id=null;grUi(0);for(let i=0;i<3;i++)setTimeout(()=>{if(ch&&ch.state=='joined')ch.send({type:'broadcast',event:'g',payload:{i:MID,to:id,x:0,y:0,on:0}})},i*80);toast('Игрок отпущен')}
+tap('#bGr',grabStop);tap('#bGe',grabStop);
+function mmTick(t){if(!ch||ch.state!='joined'||(mode!='play'&&mode!='ed')||t-mpM<90)return;mpM=t;
+ if(GRB.id){if(!RM[GRB.id]){GRB.id=null;grUi(0);toast('Игрок ушёл')}else ch.send({type:'broadcast',event:'g',payload:{i:MID,to:GRB.id,x:+GRB.x.toFixed(2),y:+GRB.y.toFixed(2),on:1}})}
+ if(mode=='play'&&S.mm&&MC.s&&performance.now()-MC.t<3000)ch.send({type:'broadcast',event:'m',payload:{i:MID,r:rlOwn()?1:0,x:+MC.x.toFixed(2),y:+MC.y.toFixed(2)}});else if(rlOwn())ch.send({type:'broadcast',event:'m',payload:{i:MID,r:1}})}
 function mpMouse(q){if(!q||q.i==MID||!isFinite(q.x)||!isFinite(q.y))return;const r=RMC[q.i]||(RMC[q.i]={});r.x=+q.x;r.y=+q.y;r.t=performance.now()}
-function mpGrab(q){if(!q||q.to!==MID||!grabOk())return;
+function mpGrab(q){if(!q||q.to!==MID||!inCo())return;
  if(q.on){if(S.ng||mode!='play')return;const f=!GRD;GRD={x:+q.x||0,y:+q.y||0,t:performance.now(),by:q.i};if(f){const r=RM[q.i];toast('✋ Тебя схватил '+(r?r.n:'игрок'))}}
  else if(GRD&&GRD.by===q.i){GRD=null;toast('Тебя отпустили')}}
 function grabPull(d){if(performance.now()-GRD.t>1500){GRD=null;return}
